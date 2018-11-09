@@ -1,0 +1,20 @@
+{
+  "name": "keeptheline",
+  "version": "1.0.0",
+  "description": "roglike strategy",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "EvanRoda",
+  "license": "ISC",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.1.6",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {}
+}
