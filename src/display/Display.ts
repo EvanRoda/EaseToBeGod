@@ -7,14 +7,16 @@ export class Display {
     private container: HTMLElement;
     private world: World;
 
-    private position: Point;
-    private bounds: Bounds;
-
     private ground: HTMLCanvasElement;
     private stuff: HTMLCanvasElement;
     private effects: HTMLCanvasElement;
 
-    private size: Vector;
+    // Display state
+
+    private mySize: Vector;
+    private myIntHalfSize: Vector;
+    private myPosition: Point;
+    private myBounds: Bounds;
 
     constructor(container: HTMLElement, world: World) {
         this.container = container;
@@ -29,23 +31,47 @@ export class Display {
         this.addCanvas(this.effects);
     }
 
+    set position(point: Point) {
+        this.myPosition = point;
+        this.calcBounds();
+    }
+
+    set size(vector: Vector) {
+        this.mySize = vector;
+        this.calcIntHalfSize();
+    }
+
+    set intHalfSize(vector: Vector) {
+        this.myIntHalfSize = vector;
+        this.calcBounds();
+    }
+
+    set bounds(bounds: Bounds) {
+        this.myBounds = bounds;
+    }
+
     public jumpTo(point: Point): void {
         this.position = point;
-        this.recalculation();
-
     }
 
     private addCanvas(canvas: HTMLCanvasElement): void {
         canvas = document.createElement('canvas');
         canvas.classList.add('absolute');
 
-        canvas.width = this.size.x;
-        canvas.height = this.size.y;
+        canvas.width = this.mySize.x;
+        canvas.height = this.mySize.y;
 
         this.container.appendChild(canvas);
     }
 
-    private recalculation(): void {
+    private calcIntHalfSize(): void {
+        this.intHalfSize = this.mySize.div(2).floor();
+    }
 
+    private calcBounds() {
+        const min = this.myPosition.move(this.myIntHalfSize.div(World.CELL_SIZE).ceil());
+        const max = this.myPosition.move(this.mySize.sub(this.myIntHalfSize).div(World.CELL_SIZE).ceil());
+
+        this.bounds = new Bounds(min, max);
     }
 }

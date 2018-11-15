@@ -2,7 +2,7 @@ import {Point} from "../Utils/Point";
 import {Chunk} from "./Chunk";
 
 export class World {
-    public static CELL_SIZE = 32; // px
+    public static CELL_SIZE = 32; // px     Use 2 ^ n for next constants
     public static CHUNK_SIZE = 32; // cells
     public static WORLD_SIZE = 32; // chunks
 
