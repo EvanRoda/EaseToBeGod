@@ -17,6 +17,12 @@ export class Chunk {
         return this.grid.length === 0;
     }
 
+    public generate(): void {
+        for (let i = 0; i < (World.CHUNK_SIZE ** 2); i++) {
+            this.grid.push(new Cell());
+        }
+    }
+
     private fillGrid(): void {
         for (let i = 0; i < (World.CHUNK_SIZE ** 2); i++) {
             this.grid.push(new Cell());

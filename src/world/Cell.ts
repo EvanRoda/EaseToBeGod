@@ -7,9 +7,9 @@ export class Cell {
     private stuff: Stuff;
     private creature: Creature;
 
-    constructor() {
-        this.floor = new Floor();
-        this.stuff = null;
+    constructor(floor: Floor, stuff: Stuff = null) {
+        this.floor = floor;
+        this.stuff = stuff;
         this.creature = null;
     }
 
