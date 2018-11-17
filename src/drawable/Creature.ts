@@ -1,5 +1,5 @@
 import {Drawable} from "./Drawable";
 
-export class Creature extends Drawable {
+export abstract class Creature extends Drawable {
 
 }

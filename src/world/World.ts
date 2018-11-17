@@ -13,13 +13,14 @@ export class World {
     }
 
     private fillChunks(): void {
+        this.chuncks = {};
+
         for (let x = 0; x < World.WORLD_SIZE * 2; x++) {
             for (let y = 0; y < World.WORLD_SIZE; y++) {
                 const coords = new Point(x, y);
                 this.createChunk(coords);
             }
         }
-
     }
 
     private createChunk(coords: Point) {

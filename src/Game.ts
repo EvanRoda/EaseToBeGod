@@ -10,7 +10,7 @@ export class Game {
     constructor() {
         const container = document.getElementById('display');
         this.world = new World();
-        this.display = new Display(container);
+        this.display = new Display(container, this.world);
     }
 
     public init(): void {

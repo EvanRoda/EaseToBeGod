@@ -18,16 +18,15 @@ export class CellFactory {
         return new Cell(new GrassFloor(), new Tree());
     }
 
-    public randomCell(): Cell {
+    public static randomCell(): Cell {
         const w = Rnd.intInRange(100);
 
-        switch (w) {
-            case w < 10:
-                return CellFactory.stone();
-            case w < 30:
-                return CellFactory.tree();
-            default:
-                return CellFactory.grass();
+        if (w < 10) {
+            return CellFactory.stone();
+        } else if (w < 30) {
+            return CellFactory.tree();
+        } else {
+            return CellFactory.grass();
         }
     }
 }
