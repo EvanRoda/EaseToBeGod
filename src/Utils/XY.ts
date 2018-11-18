@@ -1,4 +1,8 @@
 export class XY {
+    public static toStringCoords(x, y): string {
+        return `${x},${x}`;
+    }
+
     public x: number;
     public y: number;
 
@@ -8,6 +12,6 @@ export class XY {
     }
 
     public toString(): string {
-        return `${this.x},${this.x}`;
+        return XY.toStringCoords(this.x, this.y);
     }
 }

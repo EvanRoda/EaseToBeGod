@@ -1,8 +1,8 @@
 import {Point} from "./Point";
 
 export class Bounds {
-    private min: Point;
-    private max: Point;
+    public min: Point;
+    public max: Point;
 
     constructor(min: Point, max: Point) {
         this.min = min;

@@ -3,6 +3,7 @@ import {Point} from "../Utils/Point";
 import {World} from "../world/World";
 import {Bounds} from "../Utils/Bounds";
 import {Cell} from "../world/Cell";
+import {XY} from "../Utils/XY";
 
 export class Display {
     private container: HTMLElement;
@@ -57,9 +58,8 @@ export class Display {
     }
 
     set bounds(bounds: Bounds) {
-        // todo: вычислить разницу в границах, добавить и удалить соответствующие ячейки из cells
-
         this.myBounds = bounds;
+        this.refreshCells();
     }
 
     public jumpTo(point: Point): void {
@@ -81,14 +81,33 @@ export class Display {
     }
 
     private calcBounds() {
-        const min = this.myPosition.move(this.myIntHalfSize.div(World.CELL_SIZE).ceil());
-        const max = this.myPosition.move(this.mySize.sub(this.myIntHalfSize).div(World.CELL_SIZE).ceil());
+        const min = this.myPosition.move(this.myIntHalfSize.div(-World.CELL_SIZE).ceil());
+        const max = this.myPosition.move(this.myIntHalfSize.div(World.CELL_SIZE).ceil());
 
         this.bounds = new Bounds(min, max);
     }
 
-    private animate(timeStamp: number): void {
+    private refreshCells(): void {
+        const newCells = {};
 
+        for (let y = this.myBounds.min.y; y <= this.myBounds.max.y; y++) {
+            for (let x = this.myBounds.min.x; x <= this.myBounds.max.x; x++) {
+                const str = XY.toStringCoords(x, y);
+                if (this.cells[str]) {
+                    newCells[str] = this.cells[str];
+                    continue;
+                }
+
+                newCells[str] = this.world.getCell(x, y);
+            }
+        }
+
+        this.cells = newCells;
+    }
+
+    private animate(timeStamp: number): void {
         requestAnimationFrame(this.bindAnimate);
+
+
     }
 }

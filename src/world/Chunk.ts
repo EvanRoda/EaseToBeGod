@@ -19,7 +19,18 @@ export class Chunk {
 
     public generate(): void {
         for (let i = 0; i < (World.CHUNK_SIZE ** 2); i++) {
-            this.grid.push(CellFactory.randomCell());
+            const cell = CellFactory.randomCell();
+
+            cell.setGlobal(new Point(
+                this.coords.x * World.CHUNK_SIZE + i % World.CHUNK_SIZE,
+                this.coords.y * World.CHUNK_SIZE + Math.floor(i / World.CHUNK_SIZE)
+            ));
+
+            this.grid.push(cell);
         }
+    }
+
+    public getCell(coords: Point): Cell {
+        return this.grid[World.CHUNK_SIZE * coords.y + coords.x];
     }
 }
