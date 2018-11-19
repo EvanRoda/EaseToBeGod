@@ -26,8 +26,7 @@ export class Display {
     constructor(container: HTMLElement, world: World) {
         this.container = container;
         this.world = world;
-
-        this.bindAnimate = this.animate.bind(this);
+        this.cells = {};
 
         this.myPosition = new Point(0, 0);
         this.size = new Vector(
@@ -35,10 +34,11 @@ export class Display {
             this.container.offsetHeight
         );
 
-        this.addCanvas(this.ground);
-        this.addCanvas(this.stuff);
-        this.addCanvas(this.effects);
+        this.ground = this.addCanvas();
+        this.stuff = this.addCanvas();
+        this.effects = this.addCanvas();
 
+        this.bindAnimate = this.animate.bind(this);
         this.bindAnimate(null);
     }
 
@@ -66,14 +66,16 @@ export class Display {
         this.position = point;
     }
 
-    private addCanvas(canvas: HTMLCanvasElement): void {
-        canvas = document.createElement('canvas');
+    private addCanvas(): HTMLCanvasElement {
+        const canvas = document.createElement('canvas');
         canvas.classList.add('absolute');
 
         canvas.width = this.mySize.x;
         canvas.height = this.mySize.y;
 
         this.container.appendChild(canvas);
+
+        return canvas;
     }
 
     private calcIntHalfSize(): void {
@@ -88,17 +90,22 @@ export class Display {
     }
 
     private refreshCells(): void {
-        const newCells = {};
+        const newCells: {[stringCoords: string]: Cell} = {};
 
         for (let y = this.myBounds.min.y; y <= this.myBounds.max.y; y++) {
             for (let x = this.myBounds.min.x; x <= this.myBounds.max.x; x++) {
-                const str = XY.toStringCoords(x, y);
+                const normal = new Point(
+                    x < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + x : x,
+                    y < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + y : y
+                );
+
+                const str = normal.toString();
                 if (this.cells[str]) {
                     newCells[str] = this.cells[str];
                     continue;
                 }
 
-                newCells[str] = this.world.getCell(x, y);
+                newCells[str] = this.world.getCell(normal);
             }
         }
 
@@ -108,6 +115,39 @@ export class Display {
     private animate(timeStamp: number): void {
         requestAnimationFrame(this.bindAnimate);
 
+        this.drawAll();
+    }
 
+    private drawAll(): void {
+        const ground = this.ground.getContext('2d');
+        const stuff = this.stuff.getContext('2d');
+        const halfVector = new Vector(.5, .5);
+        const shift = this.myIntHalfSize.sub(Vector.fromPoints(this.myPosition.move(halfVector), this.myBounds.min)
+            .mult(World.CELL_SIZE));
+
+        const origin = this.myBounds.min;
+
+        ground.setTransform(1, 0, 0, 1, shift.x, shift.y);
+        stuff.setTransform(1, 0, 0, 1, shift.x, shift.y);
+
+        for (let y = this.myBounds.min.y; y <= this.myBounds.max.y; y++) {
+            for (let x = this.myBounds.min.x; x <= this.myBounds.max.x; x++) {
+                ground.save();
+                stuff.save();
+                ground.translate(World.CELL_SIZE * (x - origin.x), World.CELL_SIZE * (y - origin.y));
+                stuff.translate(World.CELL_SIZE * (x - origin.x), World.CELL_SIZE * (y - origin.y));
+
+                const normal = new Point(
+                    x < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + x : x,
+                    y < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + y : y
+                );
+
+                const str = normal.toString();
+                this.cells[str].draw(ground, stuff);
+
+                ground.restore();
+                stuff.restore();
+            }
+        }
     }
 }

@@ -24,15 +24,15 @@ export class World {
         return chunk;
     }
 
-    public getCell(globalX: number, globalY: number): Cell {
+    public getCell(global: Point): Cell {
         const chunkCoord = new Point(
-            Math.floor(globalX / World.CHUNK_SIZE),
-            Math.floor(globalY / World.CHUNK_SIZE)
+            Math.floor(global.x / World.CHUNK_SIZE),
+            Math.floor(global.y / World.CHUNK_SIZE)
         );
 
         const local = new Point(
-            globalX % World.CHUNK_SIZE,
-            globalY % World.CHUNK_SIZE
+            global.x % World.CHUNK_SIZE,
+            global.y % World.CHUNK_SIZE
         );
 
         const chunk = this.getChunk(chunkCoord);

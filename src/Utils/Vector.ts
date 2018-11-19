@@ -2,6 +2,10 @@ import {XY} from "./XY";
 import {Point} from "./Point";
 
 export class Vector extends XY {
+    public static fromPoints(p1: Point, p2: Point): Vector {
+        return new Vector(p1.x - p2.x, p1.y - p2.y);
+    }
+
     public div(n: number): Vector {
         return new Vector(this.x / n, this.y / n);
     }

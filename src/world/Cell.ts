@@ -19,15 +19,16 @@ export class Cell {
         this.global = point;
     }
 
-    public draw(ctx: CanvasRenderingContext2D) {
-        this.floor.draw(ctx);
+    public draw(floor: CanvasRenderingContext2D, stuff: CanvasRenderingContext2D) {
+
+        this.floor.draw(floor);
 
         if (this.stuff) {
-            this.stuff.draw(ctx);
+            this.stuff.draw(stuff);
         }
 
         if (this.creature) {
-            this.creature.draw(ctx);
+            this.creature.draw(stuff);
         }
     }
 }

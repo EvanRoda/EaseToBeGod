@@ -1,6 +1,6 @@
 export class XY {
-    public static toStringCoords(x, y): string {
-        return `${x},${x}`;
+    public static toStringCoords(x: number, y: number): string {
+        return `${x},${y}`;
     }
 
     public x: number;
