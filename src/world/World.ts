@@ -7,6 +7,13 @@ export class World {
     public static CHUNK_SIZE = 32; // cells
     public static WORLD_SIZE = 32; // chunks
 
+    public static toNormal(x: number, y: number): Point {
+        return new Point(
+            x < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + x : x,
+            y < 0 ? World.WORLD_SIZE * World.CHUNK_SIZE + y : y
+        );
+    }
+
     private chunks: {[stringCoord: string]: Chunk};
 
     constructor() {

@@ -2,33 +2,32 @@ import {Floor} from "./../drawable/Floor";
 import {Stuff} from "./../drawable/Stuff";
 import {Creature} from "./../drawable/Creature";
 import {Point} from "../Utils/Point";
+import {Drawable} from "../drawable/Drawable";
+import {LayerTypes} from "../display/LayerTypes";
 
 export class Cell {
     private global: Point;
-    private floor: Floor;
-    private stuff: Stuff;
-    private creature: Creature;
+    private layers: Drawable[];
 
     constructor(floor: Floor, stuff: Stuff = null) {
-        this.floor = floor;
-        this.stuff = stuff;
-        this.creature = null;
+        this.initLayers();
+        this.layers[LayerTypes.FLOOR] = floor;
+        this.layers[LayerTypes.STUFF] = stuff;
     }
 
     public setGlobal(point: Point): void {
         this.global = point;
     }
 
-    public draw(floor: CanvasRenderingContext2D, stuff: CanvasRenderingContext2D) {
+    public getLayer(layerType: LayerTypes): Drawable {
+        return this.layers[layerType];
+    }
 
-        this.floor.draw(floor);
-
-        if (this.stuff) {
-            this.stuff.draw(stuff);
-        }
-
-        if (this.creature) {
-            this.creature.draw(stuff);
-        }
+    private initLayers(): void {
+        this.layers = [];
+        this.layers[LayerTypes.FLOOR] = null;
+        this.layers[LayerTypes.STUFF] = null;
+        this.layers[LayerTypes.CREATURE] = null;
+        this.layers[LayerTypes.EFFECT] = null;
     }
 }

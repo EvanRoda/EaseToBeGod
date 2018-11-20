@@ -21,6 +21,6 @@ export class Tree extends Stuff {
         const ctx = this.canvas.getContext('2d');
 
         ctx.fillStyle = '#35170c';
-        ctx.fillRect(World.CELL_SIZE / 2 - 3, 0, World.CELL_SIZE / 2 + 3, World.CELL_SIZE);
+        ctx.fillRect(World.CELL_SIZE / 2 - 3, 2, 6, World.CELL_SIZE - 4);
     }
 }
